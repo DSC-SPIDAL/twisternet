@@ -118,7 +118,8 @@ Status ArrowLinearIndex::LocationByValue(const std::shared_ptr<arrow::Scalar> &s
   auto cast_val = search_param->CastTo(index_array_->type()).ValueOrDie();
   for (int64_t ix = 0; ix < index_array_->length(); ix++) {
     auto val = index_array_->GetScalar(ix).ValueOrDie();
-    if (cast_val->Equals(val)) {
+    if (cast_val->Equals(*(std::static_pointer_cast<arrow::Scalar>(val)))) {
+    //if (cast_val->Equals(val)) {
       find_index.push_back(ix);
     }
   }
@@ -128,7 +129,8 @@ Status ArrowLinearIndex::LocationByValue(const std::shared_ptr<arrow::Scalar> &s
   auto cast_val = search_param->CastTo(index_array_->type()).ValueOrDie();
   for (int64_t ix = 0; ix < index_array_->length(); ix++) {
     auto val = index_array_->GetScalar(ix).ValueOrDie();
-    if (cast_val->Equals(val)) {
+    if (cast_val->Equals(*(std::static_pointer_cast<arrow::Scalar>(val)))) {
+    //if (cast_val->Equals(val)) {
       *find_index = ix;
       break;
     }

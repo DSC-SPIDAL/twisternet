@@ -150,7 +150,7 @@ struct CompareFunc<ArrowT, Asc, arrow::enable_if_floating_point<ArrowT>> {
 template<typename ArrowT, bool Asc>
 struct CompareFunc<ArrowT, Asc, arrow::enable_if_has_string_view<ArrowT>> {
 
-  static int compare(const arrow::util::string_view &v1, const arrow::util::string_view &v2) {
+  static int compare(const std::string_view &v1, const std::string_view &v2) {
     if (Asc) {
       return v1.compare(v2);
     } else {
@@ -220,7 +220,7 @@ class EmptyIndexComparator : public ArrayIndexComparator {
 /*
  * Single implementation for both numeric and binary comparators. array->GetView(idx) method is
  * used here. For Numeric arrays, this would translate to value by pointer offset. For binary,
- * this will take arrow::util::string_view.
+ * this will take std::string_view.
  */
 template<typename ArrowT, bool Asc, bool NullOrder>
 class ArrayIndexComparatorWithNulls : public ArrayIndexComparator {

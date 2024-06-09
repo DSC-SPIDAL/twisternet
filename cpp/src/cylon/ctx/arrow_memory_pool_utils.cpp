@@ -27,6 +27,7 @@ arrow::MemoryPool *cylon::ToArrowPool(cylon::MemoryPool *pool) {
     return arrow::default_memory_pool();
   } else {
     // todo this is dangerous! return a smart pointer
-    return new ProxyMemoryPool(pool);
+    //return new ProxyMemoryPool(pool);
+    return arrow::default_memory_pool();
   }
 }

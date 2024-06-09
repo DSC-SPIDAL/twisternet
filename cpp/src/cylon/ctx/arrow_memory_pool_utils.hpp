@@ -30,31 +30,31 @@ class ProxyMemoryPool : public arrow::MemoryPool {
     this->tx_memory = tx_memory;
   }
 
-  ~ProxyMemoryPool() override {
+  ~ProxyMemoryPool() override{
     delete tx_memory;
   }
 
-  arrow::Status Allocate(int64_t size, uint8_t **out) override {
+  arrow::Status Allocate(int64_t size, uint8_t **out) {
     return ArrowStatus(tx_memory->Allocate(size, out));
   }
 
-  arrow::Status Reallocate(int64_t old_size, int64_t new_size, uint8_t **ptr) override {
+  arrow::Status Reallocate(int64_t old_size, int64_t new_size, uint8_t **ptr) {
     return ArrowStatus(tx_memory->Reallocate(old_size, new_size, ptr));
   };
 
-  void Free(uint8_t *buffer, int64_t size) override {
+  void Free(uint8_t *buffer, int64_t size) {
     tx_memory->Free(buffer, size);
   }
 
-  int64_t bytes_allocated() const override {
+  int64_t bytes_allocated() const {
     return this->tx_memory->bytes_allocated();
   }
 
-  int64_t max_memory() const override {
+  int64_t max_memory() const {
     return this->tx_memory->max_memory();
   }
 
-  std::string backend_name() const override {
+  std::string backend_name() const {
     return this->tx_memory->backend_name();
   }
 

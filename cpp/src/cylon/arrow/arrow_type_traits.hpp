@@ -35,7 +35,7 @@ template<typename ArrowT>
 struct ArrowTypeTraits<ArrowT, arrow::enable_if_has_string_view<ArrowT>> {
   using ScalarT = typename arrow::TypeTraits<ArrowT>::ScalarType;
   using ArrayT = typename arrow::TypeTraits<ArrowT>::ArrayType;
-  using ValueT = arrow::util::string_view;
+  using ValueT = std::string_view;
 
   static ValueT ExtractFromScalar(const std::shared_ptr<arrow::Scalar> &scalar) {
     return ValueT(*(std::static_pointer_cast<ScalarT>(scalar))->value);

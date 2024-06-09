@@ -262,6 +262,8 @@ build_cpp_with_custom_arrow() {
   print_line
   source "${PYTHON_ENV_PATH}"/bin/activate || exit 1
   read_python_requirements
+  pip install pyarrow==16.1.0 || exit 1
+  pip install parquet || exit 1
   ARROW_LIB=$(python3 -c 'import pyarrow as pa; import os; print(os.path.dirname(pa.__file__))') || exit 1
   ARROW_INC=$(python3 -c 'import pyarrow as pa; import os; print(os.path.join(os.path.dirname(pa.__file__), "include"))') || exit 1
   echo "ARROW_LIB: $ARROW_LIB"
@@ -300,6 +302,11 @@ build_cpp_conda() {
   print_line
   echo "Building Conda CPP in ${BUILD_MODE} mode"
   print_line
+  
+  export CC=`which mpicc`
+  export CXX=`which mpicxx`
+  export MPI_CC=`which mpicc`
+  export MPI_CXX=`which mpicxx`
 
   # set install path to conda directory if not already set
   INSTALL_PATH=${INSTALL_PATH:=${PREFIX:=${CONDA_PREFIX}}}
@@ -314,9 +321,14 @@ build_cpp_conda() {
   for SO_FILE in "${ARROW_LIB}/libarrow.so" "${ARROW_LIB}/libarrow_python.so"; do
     if [ ! -f "$SO_FILE" ]; then
       echo "$SO_FILE does not exist! Trying to create a symlink"
-      ln -sf "$(ls "$SO_FILE".*)" "$SO_FILE" || exit 1
+      PYARROW_LIB=$(python3 -c 'import pyarrow as pa; import os; print(os.path.dirname(pa.__file__))') || exit 1
+      ln -sf ${PYARROW_LIB}/libarrow_python.so "$SO_FILE" || exit 1
     fi
   done
+
+
+
+  #ln -s ${ARROW_LIB}/libarrow_python.so ${PYARROW_LIB}/libarrow_python.so
 
   echo "SOURCE_DIR: ${SOURCE_DIR}"
   BUILD_PATH=$(pwd)/build
@@ -344,6 +356,7 @@ build_gcylon() {
 
   # set install path to conda directory if not already set
   INSTALL_PATH=${INSTALL_PATH:=${PREFIX:=${CONDA_PREFIX}}}
+  export CUDA_HOME=$CONDA_PREFIX
 
   echo "SOURCE_DIR: ${SOURCE_DIR}"
   BUILD_PATH=$(pwd)/build
@@ -380,7 +393,7 @@ build_python_pyarrow() {
   echo "Building Pycylon"
   source "${PYTHON_ENV_PATH}"/bin/activate || exit 1
   read_python_requirements
-  pip install pyarrow==9.0.0 || exit 1
+  #pip install pyarrow==14.0.2 || exit 1
 
   ARROW_LIB=$(python3 -c 'import pyarrow as pa; import os; print(os.path.dirname(pa.__file__))') || exit 1
   LD_LIBRARY_PATH="${ARROW_LIB}:${BUILD_PATH}/lib:${LD_LIBRARY_PATH}" || exit 1
@@ -526,7 +539,7 @@ fi
 
 if [ "${PYTHON_BUILD}" = "ON" ]; then
   export_info
-  build_pyarrow
+  #build_pyarrow
   check_pyarrow_installation
   build_python
   check_pycylon_installation

@@ -24,9 +24,9 @@
 cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-project(CYLON VERSION 0.6.0)
+project(CYLON VERSION 0.7.0)
 
-set(CYLON_VERSION 0.6.0)
+set(CYLON_VERSION 0.7.0)
 
 ## defaults to release build
 if (NOT CMAKE_BUILD_TYPE)
@@ -34,7 +34,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 
 # cmake modules directories
-set(CYLON_ARROW_VERSION 9.0.0)
+set(CYLON_ARROW_VERSION 16.1.0)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/Modules/" ${CMAKE_MODULE_PATH})
 list(APPEND CMAKE_MODULE_PATH ${CYLON_SOURCE_DIR}/CMake)
 
@@ -74,13 +74,15 @@ else ()
 endif ()
 
 # C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(GCC_ABI_COMPILE_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0")
 if (NOT HAVE_EXCLUSIVE_SCAN)
     add_definitions(-DNEED_EXCLUSIVE_SCAN)
 endif ()
+
+
 
 # check for conda environment
 if ("$ENV{CONDA_BUILD}" STREQUAL "1")
@@ -404,11 +406,11 @@ if (${ARROW_BUILD_TYPE} STREQUAL "SYSTEM")
 
 elseif (${ARROW_BUILD_TYPE} STREQUAL "SOURCE")
     message("Building Arrow from SOURCE")
+    set(Arrow_DIR ${ARROW_ROOT}/cmake/arrow)
     include(ConfigureArrow)
     include_directories(SYSTEM "${ARROW_INCLUDE_DIR}")
 elseif (${ARROW_BUILD_TYPE} STREQUAL "CUSTOM")
     message("Using CUSTOM Arrow installation")
-
     if (NOT ARROW_LIB_DIR)
         message(FATAL_ERROR "ARROW_BUILD_TYPE is set to CUSTOM, ARROW_LIB_DIR should be set")
     endif ()

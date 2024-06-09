@@ -96,11 +96,11 @@ message(STATUS "Arrow libs dir: " ${ARROW_LIBRARY_DIR})
 message(STATUS "Arrow include dir: " ${ARROW_INCLUDE_DIR})
 
 # find packages with the help of arrow Find*.cmake files
-find_package(Arrow REQUIRED HINTS "${ARROW_LIBRARY_DIR}/cmake/arrow" CONFIGS FindArrow.cmake)
+find_package(Arrow REQUIRED HINTS "${ARROW_ROOT}/cmake/arrow" CONFIGS FindArrow.cmake)
 message(STATUS "Arrow lib: ${ARROW_SHARED_LIB}")
 set(ARROW_LIB ${ARROW_SHARED_LIB})
 
-find_package(Parquet REQUIRED HINTS "${ARROW_LIBRARY_DIR}/cmake/arrow" CONFIGS FindParquet.cmake)
+find_package(Parquet REQUIRED HINTS "${ARROW_ROOT}/cmake/arrow" CONFIGS FindParquet.cmake)
 message(STATUS "Parquet lib: ${PARQUET_SHARED_LIB}")
 set(PARQUET_LIB ${PARQUET_SHARED_LIB})
 

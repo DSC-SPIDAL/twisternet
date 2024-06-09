@@ -81,7 +81,7 @@ def test_cylon_set_index_from_column():
     from pycylon.indexing.cyindex import IndexingType
     from pycylon.indexing.index_utils import IndexUtil
 
-    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 10], dtype=np.int64()),
+    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 10], dtype=np.int64),
                               'b': pd.Series([2, 5, 8, 11, 22, 25, 12], dtype='int')})
     pdf = pd.DataFrame([[1, 2], [4, 5], [7, 8], [10, 11], [20, 22], [23, 25], [10, 12]])
     ctx: CylonContext = CylonContext(config=None, distributed=False)
@@ -105,7 +105,7 @@ def test_reset_index():
     from pycylon.indexing.cyindex import IndexingType
     from pycylon.indexing.index_utils import IndexUtil
 
-    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 10], dtype=np.int64()),
+    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 10], dtype=np.int64),
                               'b': pd.Series([2, 5, 8, 11, 22, 25, 12], dtype='int')})
     pdf = pd.DataFrame([[1, 2], [4, 5], [7, 8], [10, 11], [20, 22], [23, 25], [10, 12]])
     ctx: CylonContext = CylonContext(config=None, distributed=False)
@@ -467,12 +467,12 @@ def test_cylon_cpp_str_range_column_indexing():
 def test_loc_op_mode_1():
     from pycylon.indexing.cyindex import IndexingType
 
-    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 11], dtype=np.int64()),
+    pdf_float = pd.DataFrame({'a': pd.Series([1, 4, 7, 10, 20, 23, 11], dtype=np.int64),
                               'b': pd.Series([2, 5, 8, 11, 22, 25, 12], dtype='int'),
                               'c': pd.Series([12, 15, 18, 111, 122, 125, 112], dtype='int'),
                               'd': pd.Series([212, 215, 218, 211, 222, 225, 312], dtype='int'),
                               'e': pd.Series([1121, 12151, 12181, 12111, 12221, 12251, 13121],
-                                             dtype='int')})
+                                             dtype=np.int32)})
     ctx: CylonContext = CylonContext(config=None, distributed=False)
     cn_tb: Table = Table.from_pandas(ctx, pdf_float)
     indexing_type = IndexingType.LINEAR

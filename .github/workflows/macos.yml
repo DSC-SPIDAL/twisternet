@@ -24,10 +24,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Remove link for preventing an error
-        run: rm -f /usr/local/bin/2to3
+      #- name: Remove link for preventing an error
+      #  run: rm -f /usr/local/bin/2to3
       - name: Install dependencies
         run: brew install re2 automake boost brotli c-ares ccache flatbuffers grpc llvm lz4 minio ninja openssl@1.1 protobuf rapidjson snappy thrift wget zstd
+      
+      - name: Include $CONDA in $PATH
+        run: export PATH="$CONDA/condabin:$PATH"
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
