@@ -27,6 +27,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"  # You can specify a version or leave it as "latest"
+          auto-update-conda: true
           activate-environment: cylon_dev
           environment-file: conda/environments/windows.yml
 
